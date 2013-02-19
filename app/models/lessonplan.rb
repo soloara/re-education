@@ -33,8 +33,9 @@ class Lessonplan < ActiveRecord::Base
 
   def attachments(extensions)
     ret = []
+    p self.lessonplan_attachments
     self.lessonplan_attachments.order('created_at DESC').each do |attachment|
-      ret.push attachment if extensions.include? attachment.name.split('.').last
+      ret.push attachment if extensions.include? attachment.name.split('.').last.downcase
     end
     ret
   end
@@ -51,7 +52,13 @@ class Lessonplan < ActiveRecord::Base
     read_attribute(:attachment)
   end
 
-  def Lessonplan.list_last num
-    Lessonplan.limit(num).order('created_at DESC')
+  def self.list_last num
+    self.limit(num).order('created_at DESC')
   end
+
+  def create_tasks(tasks)
+    self.tasks.destroy_all
+    tasks.each { |task| self.tasks.create! task } if tasks.present?
+  end
+
 end

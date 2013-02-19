@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:error] = "Access denied."
-    redirect_to root_url
+    redirect_to '/login'
   end
 
   def render_404
@@ -26,28 +26,4 @@ class ApplicationController < ActionController::Base
   def current_user=(publisher)
     session[:user_id] = publisher.try(:id)
   end
-
-  def jsonp
-    str = 'hello world';
-    func = params[:callback]
-    render :js =>
-      "try{" +
-        "#{func}({ str : '#{str}' });" +
-      "}catch(e){" +
-        "console.error('request error');" +
-      "}"
-  end
-
-  def cors
-    response.headers['Access-Control-Allow-Origin'] = '*';
-    response.headers['Access-Control-Allow-Methods'] = 'GET';
-    response.headers['Access-Control-Max-Age'] = '60';
-
-    str = 'hello cors';
-    render :json => "{ \"src\" : \"#{str}\" }"
-  end
-
-  def cross_post
-  end
-
 end
