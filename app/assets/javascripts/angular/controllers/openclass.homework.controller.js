@@ -6,12 +6,12 @@ function HomeworksController($scope){
 	});
 
   var attachmentsCount = {
-    image: 0,
-    scratch: 0
-  }
+    images: 0,
+    scratches: 0
+  };
 
   $scope.$on("AttachmentsCountChange", function(event, newAttachmentsCount, fileType) {
     attachmentsCount[fileType] = newAttachmentsCount;
-    $scope.attachmentsCount = attachmentsCount.image + attachmentsCount.scratch;
+    $scope.attachmentsCount = attachmentsCount.images + attachmentsCount.scratches;
   });
 }
